@@ -8,7 +8,7 @@
 +		fastcgi_pass unix:/var/run/php5-fpm.sock;
 +		include fastcgi_params;
 +		fastcgi_param SERVER_NAME $host;
-+		fastcgi_param SCRIPT_FILENAME /home/greg/test.php;
++		fastcgi_param SCRIPT_FILENAME /var/git/git-deploy/webhook.php;
 +	}
 +
  	# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
