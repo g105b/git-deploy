@@ -1,0 +1,21 @@
+--- default	2016-04-13 10:37:02.915152794 +0000
++++ default_with_webhook	2016-04-13 10:39:00.801541309 +0000
+@@ -46,6 +46,13 @@
+ 		try_files $uri $uri/ =404;
+ 	}
+
++	location /webhook {
++		fastcgi_pass unix:/var/run/php5-fpm.sock;
++		include fastcgi_params;
++		fastcgi_param SERVER_NAME $host;
++		fastcgi_param SCRIPT_FILENAME /home/greg/test.php;
++	}
++
+ 	# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+ 	#
+ 	#location ~ \.php$ {
+@@ -84,3 +91,4 @@
+ #		try_files $uri $uri/ =404;
+ #	}
+ #}
++
