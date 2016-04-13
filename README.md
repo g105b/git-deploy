@@ -1,6 +1,8 @@
 # git-deploy
 
-## Rough notes.
+Deploy to live using Git. Update the live server when master branch is updated, or when CI tests pass.
+
+## Usage.
 
 Note that the webhook can be called on `push` events or `status` events. Status events will be automatically dispatched by Github if a CI system is correctly set up. When using the status event, only success statuses will be used.
 
