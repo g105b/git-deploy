@@ -44,7 +44,8 @@ if($payload->ref !== "refs/heads/master"
 	exit;
 }
 
-$pullCheckoutScriptPath = __DIR__ . "/pull-checkout.bash";
+$pullCheckoutScriptPath = __DIR__ . "/pull-checkout.bash "
+	. $payload->repository->full_name;
 $response = shell_exec($pullCheckoutScriptPath . " 2>&1");
 
 $logPath = getenv("webhook_log_path");
