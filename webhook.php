@@ -65,9 +65,9 @@ if($receivedBranch) {
 	);
 }
 else {
-	foreach ($payload->branches as $branch) {
-		if($payload->sha === $branch->commit->sha) {
-			$receivedBranch = $branch->name;
+	foreach ($payload->branches as $b) {
+		if($payload->sha === $b->commit->sha) {
+			$receivedBranch = $b->name;
 			break;
 		}
 	}
