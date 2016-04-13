@@ -9,6 +9,11 @@ if [ -d "$dir/config.d" ]; then
 	fi
 fi
 
+if [ -z "$repo_dir" -o -z "$repo_url"]; then
+	echo "Config value not set"
+	exit;
+fi
+
 if [ ! -f $repo_dir ]; then
 	git clone -b $webhook_branch --single-branch $repo_url $repo_dir
 fi
