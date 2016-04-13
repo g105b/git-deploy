@@ -35,7 +35,8 @@ $logPath = getenv("webhook_log_path");
 if($logPath !== false) {
 	file_put_contents(
 		$logPath,
-		date("Y-m-d H:i:s") . PHP_EOL . $response . PHP_EOL
+		date("Y-m-d H:i:s") . PHP_EOL . $response . PHP_EOL,
+		FILE_APPEND
 	);
 }
 
