@@ -1,4 +1,10 @@
 <?php
+if($_SERVER["REQUEST_METHOD"] === "GET") {
+	http_response_code(200);
+	echo "Webhook script installed successfully";
+	exit;
+}
+
 foreach(parse_ini_file(__DIR__ . "/config.ini") as $key => $value) {
 	putenv("$key=$value");
 }
