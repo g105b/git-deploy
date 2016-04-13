@@ -38,8 +38,19 @@ if($event === "ping") {
 	exit;
 }
 
+$eventToContinue = getenv("webhook_event");
+if(!$eventToContinue) {
+	$eventToContinue = "push";
+}
+
 if($payload->ref !== "refs/heads/master"
-|| $event !== "push") {
+|| $event !== $eventToContinue) {
+	http_response_code(204);
+	exit;
+}
+
+if($eventToContinue === "status"
+&& $payload->state !== "success") {
 	http_response_code(204);
 	exit;
 }
