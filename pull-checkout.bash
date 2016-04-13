@@ -9,7 +9,7 @@ if [ -d "$dir/config.d" ]; then
 	fi
 fi
 
-if [ -z "$repo_dir" -o -z "$repo_url"]; then
+if [ -z "$repo_dir" -o -z "$repo_url" ]; then
 	echo "Config value not set"
 	exit;
 fi
