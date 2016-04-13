@@ -1,4 +1,8 @@
 <?php
+foreach(parse_ini_file(__DIR__ . "/config.ini") as $key => $value) {
+	putenv("$key=$value");
+}
+
 $headers = getallheaders();
 $event = $headers["X-Github-Event"];
 
