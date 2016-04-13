@@ -32,6 +32,12 @@ if($hash !== $payload_hash) {
 	throw new Exception("Authentication failure");
 }
 
+if($event === "ping") {
+	http_response_code(200);
+	echo "pong";
+	exit;
+}
+
 if($payload->ref !== "refs/heads/master"
 || $event !== "push") {
 	http_response_code(204);
