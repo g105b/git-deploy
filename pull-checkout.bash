@@ -16,7 +16,10 @@ fi
 cd $repo_dir
 git pull $repo_url
 git --work-tree=$destination_path --git-dir=$repo_dir.git checkout -f
-"$dir/post-checkout.bash $1"
+
+if [ -f "$dir/post-checkout.bash" ]; then
+	"$dir/post-checkout.bash $1"
+fi
 
 if [ -d "$dir/post-checkout.d" ]; then
 	if [ -f "$dir/post-checkout.d/$1.bash" ]; then
