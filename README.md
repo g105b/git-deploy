@@ -2,6 +2,8 @@
 
 ## Rough notes.
 
+Note that the webhook can be called on `push` events or `status` events. Status events will be automatically dispatched by Github if a CI system is correctly set up. When using the status event, only success statuses will be used.
+
 ### Live server administration.
 
 + Make directory `/var/git`
