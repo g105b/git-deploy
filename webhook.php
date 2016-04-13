@@ -68,7 +68,7 @@ if($eventToContinue === "status"
 	exit;
 }
 
-$pullCheckoutScriptPath = __DIR__ . "/pull-checkout.bash $repoName";
+$pullCheckoutScriptPath = __DIR__ . "/pull-checkout.bash $repoNameNoSlashes";
 $response = shell_exec($pullCheckoutScriptPath . " 2>&1");
 
 $logPath = getenv("webhook_log_path");
