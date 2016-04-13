@@ -18,14 +18,27 @@ if(!$payload_raw) {
 	throw new Exception("Reading payload failed");
 }
 
-list($algo, $hash) = explode("=", $headers["X-Hub-Signature"], 2);
-$payload_hash = hash_hmac($algo, $payload_raw, getenv("webhook_secret"));
-
 $payload = json_decode($payload_raw);
 if(empty($payload)) {
 	http_response_code(500);
 	throw new Exception("Failure parsing payload");
 }
+
+$repoName = $payload->repository->full_name;
+$repoNameNoSlashes = str_replace("/", "_", $repoName);
+
+if(is_dir(__DIR__ . "/config.d")) {
+	$iniFile = __DIR__ . "/config.d/$repoNameNoSlashes.ini";
+
+	if(file_exists($iniFile)) {
+		foreach(parse_ini_file($iniFile) as $key => $value) {
+			putenv("$key=$value");
+		}
+	}
+}
+
+list($algo, $hash) = explode("=", $headers["X-Hub-Signature"], 2);
+$payload_hash = hash_hmac($algo, $payload_raw, getenv("webhook_secret"));
 
 if($hash !== $payload_hash) {
 	http_response_code(401);
@@ -55,8 +68,7 @@ if($eventToContinue === "status"
 	exit;
 }
 
-$pullCheckoutScriptPath = __DIR__ . "/pull-checkout.bash "
-	. $payload->repository->full_name;
+$pullCheckoutScriptPath = __DIR__ . "/pull-checkout.bash $repoName";
 $response = shell_exec($pullCheckoutScriptPath . " 2>&1");
 
 $logPath = getenv("webhook_log_path");
