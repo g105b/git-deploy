@@ -54,3 +54,9 @@ Configuration options:
 	+ Which events: Just the push event
 	+ Active: true
 + Github's ping should be responded with a pong from the webhook script.
+
+### Post checkout scripts
+
+By default, `post-checkout.bash` will be executed directly after the checkout succeeds. The script will receive the repo name (with slashes removed) as the first argument.
+
+It is possible to provide a separate bash script for each individual repository by putting them in the `post-checkout.d/` directory, as scripts named as the repository's name (with slashes replaced with underscores), e.g. `post-checkout.d/MyAccount_RepoName.bash`.
