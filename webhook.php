@@ -57,9 +57,26 @@ if(!$eventToContinue) {
 }
 
 $branch = getenv("webhook_branch");
-if($payload->ref !== "refs/heads/$branch") {
+$receivedBranch = $payload->ref;
+if($receivedBranch) {
+	$receivedBranch = substr(
+		$receivedBranch,
+		strrpos($receivedBranch, "/") + 1
+	);
+}
+else {
+	foreach ($payload->branches as $branch) {
+		if($payload->sha === $branch->commit->sha) {
+			$receivedBranch = $branch->name;
+			break;
+		}
+	}
+}
+
+if($receivedBranch !== $branch) {
 	http_response_code(200);
-	echo "Waiting for $branch - {$payload->ref} received.";
+	echo "Waiting for $branch - $receivedBranch received.";
+	exit;
 }
 
 if($event !== $eventToContinue) {
