@@ -2,7 +2,7 @@
 dir="$(dirname "$0")"
 source "$dir/config.ini"
 
-cd $REPO_DIR
-git pull $REPO_URL
-git --work-tree=$DESTINATION_PATH --git-dir=$REPO_DIR.git checkout -f
+cd $repo_url
+git pull $repo_url
+git --work-tree=$destination_path --git-dir=$repo_dir.git checkout -f
 ./post-checkout.bash
