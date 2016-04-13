@@ -57,7 +57,7 @@ if(!$eventToContinue) {
 }
 
 $branch = getenv("webhook_branch");
-$receivedBranch = $payload->ref;
+$receivedBranch = isset($payload->ref) ? $payload->ref : null;
 if($receivedBranch) {
 	$receivedBranch = substr(
 		$receivedBranch,
