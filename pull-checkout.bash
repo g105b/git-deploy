@@ -16,11 +16,22 @@ fi
 
 if [ ! -f $repo_dir ]; then
 	echo "Cloning $repo_url into $repo_dir on branch $webhook_branch"
-	git clone -b $webhook_branch --single-branch $repo_url $repo_dir
+	git_cmd="git clone -b $webhook_branch --single-branch $repo_url $repo_dir"
+
+	if [ -n $ssh_private_key ]; then
+		git_cmd="ssh -i $ssh_private_key $git_cmd"
+	fi
+
+	$git_cmd
 fi
 
 cd $repo_dir
-git pull $repo_url
+git_cmd="git pull $repo_url"
+if [ -n $ssh_private_key ]; then
+	git_cmd="ssh -i $ssh_private_key $git_cmd"
+fi
+$git_cmd
+
 git --work-tree=$destination_path --git-dir=$repo_dir.git checkout -f
 
 if [ -f "$dir/post-checkout.bash" ]; then
