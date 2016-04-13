@@ -56,9 +56,15 @@ if(!$eventToContinue) {
 	$eventToContinue = "push";
 }
 
-if($payload->ref !== "refs/heads/master"
-|| $event !== $eventToContinue) {
-	http_response_code(204);
+$branch = getenv("webhook_branch");
+if($payload->ref !== "refs/heads/$branch") {
+	http_response_code(200);
+	echo "Waiting for $branch - {$payload->ref} received.";
+}
+
+if($event !== $eventToContinue) {
+	http_response_code(200);
+	echo "Waiting for $eventToContinue - $event received.";
 	exit;
 }
 
