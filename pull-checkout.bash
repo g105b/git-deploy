@@ -32,7 +32,7 @@ if [ -n $ssh_private_key ]; then
 fi
 eval $git_cmd
 
-git --work-tree=$destination_path --git-dir=$repo_dir.git checkout -f
+git --work-tree=$destination_path --git-dir=$repo_dir/.git checkout -f
 
 if [ -f "$dir/post-checkout.bash" ]; then
 	"$dir/post-checkout.bash $1"
