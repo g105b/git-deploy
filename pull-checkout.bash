@@ -22,6 +22,7 @@ if [ ! -f $repo_dir ]; then
 		git_cmd="ssh -i $ssh_private_key $git_cmd"
 	fi
 
+	echo "Running: $git_cmd"
 	$git_cmd
 fi
 
