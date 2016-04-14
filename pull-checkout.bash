@@ -46,6 +46,10 @@ echo "Running git command: $git_cmd"
 eval $git_cmd
 
 echo "Running git command: git --work-tree=$destination_path --git-dir=$repo_dir/.git checkout -f"
+if [ ! -f $destination_path ]; then
+	mkdir -p $destination_path
+fi
+
 git --work-tree=$destination_path --git-dir=$repo_dir/.git checkout -f
 
 echo "Running post-checkout scripts"
