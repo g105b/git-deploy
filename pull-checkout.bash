@@ -33,6 +33,7 @@ if [ ! -f $repo_dir ]; then
 		git_cmd="GIT_SSH_COMMAND='ssh -i $ssh_private_key' $git_cmd"
 	fi
 
+	echo "Git command: $git_cmd"
 	eval $git_cmd
 fi
 
