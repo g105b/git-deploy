@@ -27,7 +27,7 @@ fi
 
 if [ ! -f $repo_dir ]; then
 	echo "Cloning $repo_url into $repo_dir on branch $webhook_branch"
-	git_cmd="git clone -b $webhook_branch --single-branch $repo_url $repo_dir"
+	git_cmd="git clone $repo_url $repo_dir"
 
 	if [ -n $ssh_private_key ]; then
 		git_cmd="GIT_SSH_COMMAND='ssh -i $ssh_private_key -o StrictHostKeyChecking=no' $git_cmd"
