@@ -30,7 +30,7 @@ if [ ! -f $repo_dir ]; then
 	git_cmd="git clone -b $webhook_branch --single-branch $repo_url $repo_dir"
 
 	if [ -n $ssh_private_key ]; then
-		git_cmd="GIT_SSH_COMMAND='ssh -i $ssh_private_key -o StrictHostKeyChecking=no' $git_cmd"
+		git_cmd="GIT_SSH_COMMAND='ssh -i $ssh_private_key# -o StrictHostKeyChecking=no' $git_cmd"
 	fi
 
 	echo "Git command: $git_cmd"
@@ -42,9 +42,13 @@ git_cmd="git pull $repo_url"
 if [ -n $ssh_private_key ]; then
 	git_cmd="GIT_SSH_COMMAND='ssh -i $ssh_private_key -o StrictHostKeyChecking=no' $git_cmd"
 fi
+echo "Running git command: $git_cmd"
 eval $git_cmd
 
+echo "Running git command: git --work-tree=$destination_path --git-dir=$repo_dir/.git checkout -f"
 git --work-tree=$destination_path --git-dir=$repo_dir/.git checkout -f
+
+echo "Running post-checkout scripts"
 
 if [ -f "$dir/post-checkout.bash" ]; then
 	"$dir/post-checkout.bash $1"
