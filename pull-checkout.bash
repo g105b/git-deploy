@@ -22,7 +22,7 @@ if [ ! -f $repo_dir ]; then
 		git_cmd="GIT_SSH_COMMAND='ssh -i $ssh_private_key' $git_cmd"
 	fi
 
-	$git_cmd
+	eval $git_cmd
 fi
 
 cd $repo_dir
@@ -30,7 +30,7 @@ git_cmd="git pull $repo_url"
 if [ -n $ssh_private_key ]; then
 	git_cmd="GIT_SSH_COMMAND='ssh -i $ssh_private_key' $git_cmd"
 fi
-$git_cmd
+eval $git_cmd
 
 git --work-tree=$destination_path --git-dir=$repo_dir.git checkout -f
 
