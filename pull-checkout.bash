@@ -30,7 +30,7 @@ if [ ! -f $repo_dir ]; then
 	git_cmd="git clone -b $webhook_branch --single-branch $repo_url $repo_dir"
 
 	if [ -n $ssh_private_key ]; then
-		git_cmd="GIT_SSH_COMMAND='ssh -i $ssh_private_key' $git_cmd"
+		git_cmd="GIT_SSH_COMMAND='ssh -i $ssh_private_key -o StrictHostKeyChecking=no' $git_cmd"
 	fi
 
 	echo "Git command: $git_cmd"
@@ -40,7 +40,7 @@ fi
 cd $repo_dir
 git_cmd="git pull $repo_url"
 if [ -n $ssh_private_key ]; then
-	git_cmd="GIT_SSH_COMMAND='ssh -i $ssh_private_key' $git_cmd"
+	git_cmd="GIT_SSH_COMMAND='ssh -i $ssh_private_key -o StrictHostKeyChecking=no' $git_cmd"
 fi
 eval $git_cmd
 
