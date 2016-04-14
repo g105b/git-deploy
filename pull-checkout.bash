@@ -10,14 +10,14 @@ if [ -d "$dir/config.d" ]; then
 fi
 
 echo "Config values:"
-echo "webhook_event = $webhook_event"
-echo "webhook_branch = $webhook_branch"
-echo "webhook_secret = $webhook_secret"
-echo "webhook_log_path = $webhook_log_path"
-echo "repo_url = $repo_url"
-echo "repo_dir = $repo_dir"
-echo "destination_path = $destination_path"
-echo "ssh_private_key = $ssh_private_key"
+echo "webhook_event=$webhook_event"
+echo "webhook_branch=$webhook_branch"
+echo "webhook_secret=$webhook_secret"
+echo "webhook_log_path=$webhook_log_path"
+echo "repo_url=$repo_url"
+echo "repo_dir=$repo_dir"
+echo "destination_path=$destination_path"
+echo "ssh_private_key=$ssh_private_key"
 echo "--------------"
 
 if [ -z "$repo_dir" -o -z "$repo_url" ]; then
