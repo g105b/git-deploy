@@ -58,11 +58,11 @@ git --work-tree=$destination_path --git-dir=$repo_dir/.git checkout -f
 echo "Running post-checkout scripts"
 
 if [ -f "$dir/post-checkout.bash" ]; then
-	"$dir/post-checkout.bash $1"
+	eval "$dir/post-checkout.bash $1"
 fi
 
 if [ -d "$dir/post-checkout.d" ]; then
 	if [ -f "$dir/post-checkout.d/$1.bash" ]; then
-		"$dir/post-checkout.d/$1.bash"
+		eval "$dir/post-checkout.d/$1.bash"
 	fi
 fi
