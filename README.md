@@ -22,7 +22,7 @@ Note that the webhook can be called on `push` events or `status` events. Status 
 + Test the webhook script is accessable by loading the server's IP browser with the path:
 	+ `http://xx.xx.xx.xx/webhook`
 
-### Config files
+### Config files.
 
 If the server only has one repository, all configuration can go into `config.ini`. Otherwise, individual configuration files can be put into the `config.d/` directory where the filenames match the repository's name (with any slashes replaced with underscores).
 
@@ -55,8 +55,20 @@ Configuration options:
 	+ Active: true
 + Github's ping should be responded with a pong from the webhook script.
 
-### Post checkout scripts
+### Post checkout scripts.
 
 By default, `post-checkout.bash` will be executed directly after the checkout succeeds. The script will receive the repo name (with slashes removed) as the first argument.
 
 It is possible to provide a separate bash script for each individual repository by putting them in the `post-checkout.d/` directory, as scripts named as the repository's name (with slashes replaced with underscores), e.g. `post-checkout.d/MyAccount_RepoName.bash`.
+
+## Database.
+
+Included within this repository is a database migration script, allowing you to keep your database in version control.
+
+To run the database script, call it using the post-checkout script for your project, passing the name of the project as either the first argument (cli) or the `project` query string parameter (web).
+
+e.g. `php db.php username_repo`
+
+### Version table.
+
+### Migration scripts.
