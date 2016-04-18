@@ -61,7 +61,7 @@ if [ -f "$dir/post-checkout.bash" ]; then
 	echo "Running generic post-checkout.bash"
 	eval "$dir/post-checkout.bash $1"
 else
-	echo "Generic post-checkout.bash not found"
+	echo "Generic post-checkout.bash not found ( $dir/post-checkout.bash )"
 fi
 
 if [ -d "$dir/post-checkout.d" ]; then
