@@ -33,9 +33,22 @@ if(!empty($dbMigrationPath)) {
 		);
 	}
 
+	$migrationTableName = getenv("db_table");
+	if(empty($migrationTableName)) {
+		$migrationTableName = "db_migration";
+	}
+
+	// Ensure table is created
+	$dbh->query(implode("\n", [
+		"create table if not exists `$migrationTableName` (",
+		"`project` varchar(64) primary key,",
+		"`version` int",
+		")",
+	]));
+
 	$stmt = $dbh->query(implode("\n", [
 		"select `version`",
-		"from `db_migration`",
+		"from `$migrationTableName`",
 		"where `project` = '$dbMigrationPath'",
 		"limit 1",
 	]));
