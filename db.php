@@ -39,7 +39,7 @@ if(!empty($dbMigrationPath)) {
 	}
 
 	// Ensure table is created
-	$dbh->query(implode("\n", [
+	$stmt = $dbh->exec(implode("\n", [
 		"create table if not exists `$migrationTableName` (",
 		"`project` varchar(64) primary key,",
 		"`version` int",
