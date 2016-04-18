@@ -28,7 +28,7 @@ if [ -z "$repo_dir" -o -z "$repo_url" ]; then
 	exit;
 fi
 
-if [ ! -f $repo_dir ]; then
+if [ ! -d $repo_dir ]; then
 	echo "Cloning $repo_url into $repo_dir on branch $webhook_branch"
 	git_cmd="git clone $repo_url $repo_dir"
 
