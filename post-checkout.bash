@@ -4,4 +4,4 @@
 # slashes replaced with underscores
 set -e
 dir="$(dirname "$0")"
-exec "$dir/db.php $1"
+eval "$dir/db.php $1"
