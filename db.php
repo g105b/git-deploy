@@ -36,7 +36,7 @@ if(!empty($dbMigrationPath)) {
 	$stmt = $dbh->query(implode("\n", [
 		"select `version`",
 		"from `db_migration`",
-		"where `project` = '$db_migration_path'",
+		"where `project` = '$dbMigrationPath'",
 		"limit 1",
 	]));
 
