@@ -71,10 +71,10 @@ e.g. `php db.php username_repo`
 
 ### Version table.
 
-To utilise migrations, a table must exist within the database schema called `db_migration`. This table needs two columns: `project` (varchar 64) and `version` (int 10).
+To utilise migrations, a table will be created within the project's database schema called `db_migration` (configurable in config.ini). This table has two columns: `project` (varchar 64) and `version` (int 10).
 
 ### Migration scripts.
 
 Every alteration to the database, including the original table creation scripts, should be placed within a directory as numerically named files which will be run in order by db.php. db.php will record the number of script that has last been ran, so any changes will be kept in sync with local development and live.
 
-The location of the migration scripts directory can be configured in `config.ini` using the `db_migrations` key.
+The location of the migration scripts directory can be configured in `config.ini` using the `db_migration_path` key.
