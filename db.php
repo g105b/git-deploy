@@ -26,6 +26,7 @@ if(!empty($dbMigrationPath)) {
 			getenv("db_user"),
 			getenv("db_pass")
 		);
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 	catch(PDOException $e) {
 		die("Error connecting to database to perform migrations. "
@@ -38,21 +39,33 @@ if(!empty($dbMigrationPath)) {
 		$migrationTableName = "db_migration";
 	}
 
-	// Ensure table is created
-	$stmt = $dbh->exec(implode("\n", [
-		"create table if not exists `$migrationTableName` (",
-		"`project` varchar(64) primary key,",
-		"`version` int",
-		")",
-	]));
+	try {
+		// Ensure table is created
+		$dbh->exec(implode("\n", [
+			"create table if not exists `$migrationTableName` (",
+			"`project` varchar(64) primary key,",
+			"`version` int",
+			")",
+		]));
+	}
+	catch(PDOException $e) {
+		die("Failed creating migration table. "
+			. $e->getMessage());
+	}
 
-	$stmt = $dbh->query(implode("\n", [
-		"select `version`",
-		"from `$migrationTableName`",
-		"where `project` = '$dbMigrationPath'",
-		"limit 1",
-	]));
+	try {
+		$stmt = $dbh->query(implode("\n", [
+			"select `version`",
+			"from `$migrationTableName`",
+			"where `project` = '$dbMigrationPath'",
+			"limit 1",
+		]));
+		$result = $stmt->fetch();
+	}
+	catch(PDOException $e) {
+		die("Failed fetching migration version. "
+			. $e->getMessage());
+	}
 
-	$result = $stmt->fetch();
 	var_dump($result);die();
 }
