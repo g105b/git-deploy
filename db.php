@@ -67,5 +67,54 @@ if(!empty($dbMigrationPath)) {
 			. $e->getMessage());
 	}
 
-	var_dump($result);die();
+	if($result) {
+		$currentMigrationValue = (int)$result["version"];
+	}
+	else {
+		$currentMigrationValue = 0;
+	}
+
+	echo "Current db_migration value is: $currentMigrationValue" . PHP_EOL;
+
+	$queryArray = [];
+	foreach (new DirectoryIterator($dbMigrationPath) as $fileInfo) {
+		if($fileInfo->isDot()
+		|| $fileInfo->isDir()) {
+			continue;
+		}
+
+		$fileName = $fileInfo->getPathname();
+		$contents = file_get_contents($fileName);
+		$queryArray [$fileName]= $contents;
+	}
+
+	ksort($queryArray);
+
+	foreach ($queryArray as $scriptFileName => $query) {
+		$fileName = pathinfo($scriptFileName, PATHINFO_FILENAME);
+		$number = preg_match("/^([0-9]+)/", $fileName, $matches)[0];
+
+		if($number <= $currentMigrationValue) {
+			continue;
+		}
+
+		echo "Applying migration: $number" . PHP_EOL;
+
+		try {
+			$dbh->exec($query);
+
+			$currentMigrationValue = $number;
+			$dbb->exec(implode("\n", [
+				"update `$migrationTableName`",
+				"set `version` = $currentMigrationValue",
+				"where `project` = '$dbMigrationPath'",
+				"limit 1",
+			]));
+		}
+		catch(PDOException $e) {
+			die("Error applying migration $number. "
+				. $e->getMessage());
+		}
+	}
+	var_dump($fileArray);die();
 }
