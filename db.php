@@ -113,7 +113,10 @@ if(!empty($dbMigrationPath)) {
 		echo "Applying migration: $number" . PHP_EOL;
 
 		try {
-			$dbh->exec($query);
+			$queryLines = explode(";", $query);
+			foreach ($queryLines as $q) {
+				$dbh->exec($q) . ";";
+			}
 
 			$currentMigrationValue = $number;
 			$dbh->exec(implode("\n", [
