@@ -21,7 +21,6 @@ if(!empty($dbMigrationPath)) {
 	try {
 		$dbh = new PDO(
 			getenv("db_dsn")
-				. ":dbname=" . getenv("db_name")
 				. ";host=" . getenv("db_host"),
 			getenv("db_user"),
 			getenv("db_pass")
@@ -37,6 +36,15 @@ if(!empty($dbMigrationPath)) {
 	$migrationTableName = getenv("db_table");
 	if(empty($migrationTableName)) {
 		$migrationTableName = "db_migration";
+	}
+
+	try {
+		$dbh->exec("drop database if exists `$db_name`");
+		$dbh->exec("create database `$db_name`");
+		$dbh->exec("use `$db_name`");
+	}
+	catch(PDOException $e) {
+		die("Failed setting database name to: $db_name");
 	}
 
 	try {
