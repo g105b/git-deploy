@@ -37,6 +37,7 @@ if(!empty($dbMigrationPath)) {
 		$migrationTableName = "db_migration";
 	}
 
+	$db_name = getenv("db_name");
 	try {
 		$dbh->exec("drop database if exists `$db_name`");
 		$dbh->exec("create database `$db_name`");
