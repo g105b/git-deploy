@@ -92,7 +92,9 @@ if($eventToContinue === "status"
 }
 
 $pullCheckoutScriptPath = __DIR__ . "/pull-checkout.bash $repoNameNoSlashes";
-$response = shell_exec($pullCheckoutScriptPath . " 2>&1");
+exec($pullCheckoutScriptPath . " 2>&1", $responseArray);
+
+$response = implode("\n", $responseArray);
 
 $logPath = getenv("webhook_log_path");
 if($logPath !== false) {
