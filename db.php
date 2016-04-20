@@ -112,10 +112,16 @@ if(!empty($dbMigrationPath)) {
 
 		echo "Applying migration: $number" . PHP_EOL;
 
+		$subQuery = 0;
+
 		try {
 			$queryLines = explode(";", $query);
+			echo "Total subqueries: " . count($queryLines) . PHP_EOL;
+
 			foreach ($queryLines as $q) {
+				echo "Subquery $subQuery ... ";
 				$dbh->exec($q) . ";";
+				echo "complete" . PHP_EOL;
 			}
 
 			$currentMigrationValue = $number;
