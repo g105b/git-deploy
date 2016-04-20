@@ -20,8 +20,7 @@ $dbMigrationPath = getenv("db_migration_path");
 if(!empty($dbMigrationPath)) {
 	try {
 		$dbh = new PDO(
-			getenv("db_dsn")
-				. ";host=" . getenv("db_host"),
+			getenv("db_dsn"). ":host=" . getenv("db_host"),
 			getenv("db_user"),
 			getenv("db_pass")
 		);
