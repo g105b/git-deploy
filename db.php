@@ -84,6 +84,8 @@ if(!empty($dbMigrationPath)) {
 
 	echo "Current db_migration value is: $currentMigrationValue" . PHP_EOL;
 
+	echo "Checking path: $dbMigrationPath" . PHP_EOL;
+
 	$queryArray = [];
 	foreach (new DirectoryIterator($dbMigrationPath) as $fileInfo) {
 		if($fileInfo->isDot()
@@ -92,6 +94,7 @@ if(!empty($dbMigrationPath)) {
 		}
 
 		$fileName = $fileInfo->getPathname();
+
 		$contents = file_get_contents($fileName);
 		$queryArray [$fileName]= $contents;
 	}
@@ -100,7 +103,8 @@ if(!empty($dbMigrationPath)) {
 
 	foreach ($queryArray as $scriptFileName => $query) {
 		$fileName = pathinfo($scriptFileName, PATHINFO_FILENAME);
-		$number = preg_match("/^([0-9]+)/", $fileName, $matches)[0];
+		preg_match("/^([0-9]+)/", $fileName, $matches);
+		$number = $matches[1];
 
 		if($number <= $currentMigrationValue) {
 			continue;
@@ -112,7 +116,7 @@ if(!empty($dbMigrationPath)) {
 			$dbh->exec($query);
 
 			$currentMigrationValue = $number;
-			$dbb->exec(implode("\n", [
+			$dbh->exec(implode("\n", [
 				"update `$migrationTableName`",
 				"set `version` = $currentMigrationValue",
 				"where `project` = '$dbMigrationPath'",
@@ -124,5 +128,6 @@ if(!empty($dbMigrationPath)) {
 				. $e->getMessage());
 		}
 	}
-	var_dump($fileArray);die();
+
+	echo "Completed db script." . PHP_EOL;
 }
