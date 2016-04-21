@@ -39,6 +39,7 @@ if(!empty($dbMigrationPath)) {
 
 	$db_name = getenv("db_name");
 	try {
+		// TODO: Only drop when no migration table present.
 		$dbh->exec("drop database if exists `$db_name`");
 		$dbh->exec("create database `$db_name`");
 		$dbh->exec("use `$db_name`");
@@ -111,7 +112,6 @@ if(!empty($dbMigrationPath)) {
 		}
 
 		echo "Applying migration: $number" . PHP_EOL;
-		$dbh->exec("use `$db_name`");
 
 		$subQuery = 0;
 
@@ -136,7 +136,8 @@ if(!empty($dbMigrationPath)) {
 		}
 		catch(PDOException $e) {
 			die("Error applying migration $number. "
-				. $e->getMessage());
+				. $e->getMessage() . PHP_EOL . PHP_EOL
+				. $q);
 		}
 	}
 
