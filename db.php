@@ -111,6 +111,7 @@ if(!empty($dbMigrationPath)) {
 		}
 
 		echo "Applying migration: $number" . PHP_EOL;
+		$dbh->exec("use `$db_name`");
 
 		$subQuery = 0;
 
