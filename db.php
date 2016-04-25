@@ -126,10 +126,9 @@ if(!empty($dbMigrationPath)) {
 
 			$currentMigrationValue = $number;
 			$dbh->exec(implode("\n", [
-				"update `$migrationTableName`",
-				"set `version` = $currentMigrationValue",
-				"where `project` = '$dbMigrationPath'",
-				"limit 1",
+				"replace `$migrationTableName`",
+				"set `project` = '$dbMigrationPath',",
+				"`version` = $currentMigrationValue",
 			]));
 		}
 		catch(PDOException $e) {
