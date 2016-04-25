@@ -100,6 +100,10 @@ if(!empty($dbMigrationPath)) {
 
 	ksort($queryArray);
 
+	if(empty($queryArray)) {
+		echo "No new queries staged." . PHP_EOL;
+	}
+
 	foreach ($queryArray as $scriptFileName => $query) {
 		$fileName = pathinfo($scriptFileName, PATHINFO_FILENAME);
 		preg_match("/^([0-9]+)/", $fileName, $matches);
