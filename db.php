@@ -47,7 +47,7 @@ if(!empty($dbMigrationPath)) {
 	}
 
 	try {
-		// Ensure table is created
+		// Ensure table is created.
 		$dbh->exec(implode("\n", [
 			"create table if not exists `$migrationTableName` (",
 			"`project` varchar(64) primary key,",
@@ -64,7 +64,7 @@ if(!empty($dbMigrationPath)) {
 		$stmt = $dbh->query(implode("\n", [
 			"select `version`",
 			"from `$migrationTableName`",
-			"where `project` = '$dbMigrationPath'",
+			"where `project` = '$repoNameNoSlashes'",
 			"limit 1",
 		]));
 		$result = $stmt->fetch();
