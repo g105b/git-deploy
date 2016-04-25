@@ -39,9 +39,7 @@ if(!empty($dbMigrationPath)) {
 
 	$db_name = getenv("db_name");
 	try {
-		// TODO: Only drop when no migration table present.
-		$dbh->exec("drop database if exists `$db_name`");
-		$dbh->exec("create database `$db_name`");
+		$dbh->exec("create database if not exists `$db_name`");
 		$dbh->exec("use `$db_name`");
 	}
 	catch(PDOException $e) {
