@@ -130,8 +130,8 @@ if(!empty($dbMigrationPath)) {
 
 			$currentMigrationValue = $number;
 			$dbh->exec(implode("\n", [
-				"replace `$repoNameNoSlashes`",
-				"set `project` = '$dbMigrationPath',",
+				"replace `$migrationTableName`",
+				"set `project` = '$repoNameNoSlashes',",
 				"`version` = $currentMigrationValue",
 			]));
 		}
