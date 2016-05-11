@@ -48,7 +48,7 @@ Configuration options:
 + Go to the settings screen for the particular repository, or organisation (to configure all repositories at once).
 + Choose the `Webhooks & services` tab.
 + Add webhook:
-	+ URL: `http://xx.xx.xx.xx/webhook`
+	+ URL: `http://xx.xx.xx.xx/github-deploy` (as configured in steps above)
 	+ Content type: application/json
 	+ Secret: _the same as what's stored in config.ini_
 	+ Which events: Just the push event
