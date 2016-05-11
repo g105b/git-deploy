@@ -14,7 +14,7 @@ Note that the webhook can be called on `push` events or `status` events. Status 
 + Add environment variables to `/var/git/config.ini`, e.g. :
 	+ `webhook_secret=secret-to-give-to-github`
 	+ `webhook_log_path=/var/git/webhook.log`
-+ Configure webserver to respond on `/webhook` path.
++ Configure webserver to respond to `/github-deploy` requests by passing directly to `/var/git/github-deploy/webhook.php` or similar URL of your choice.
 	+ Default nginx patch available in `nginx.patch` file.
 	+ `patch /etc/nginx/sites-available/default < /var/git/git-deploy/nginx.patch`
 + Reload webserver configuration.
