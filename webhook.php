@@ -38,7 +38,7 @@ if(is_dir(__DIR__ . "/config.d")) {
 	}
 }
 
-list($algo, $hash) = explode("=", $headers["X-Hub-Signature"], 2);
+list($algo, $hash) = explode("=", $headers["x-hub-signature"], 2);
 $payload_hash = hash_hmac($algo, $payload_raw, getenv("webhook_secret"));
 
 if($hash !== $payload_hash) {
