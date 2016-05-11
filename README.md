@@ -15,8 +15,8 @@ Note that the webhook can be called on `push` events or `status` events. Status 
 	+ `webhook_secret=secret-to-give-to-github`
 	+ `webhook_log_path=/var/git/webhook.log`
 + Configure webserver to respond to `/github-deploy` requests by passing directly to `/var/git/github-deploy/webhook.php` or similar URL of your choice.
-	+ Default nginx patch available in `nginx.patch` file.
-	+ `patch /etc/nginx/sites-available/default < /var/git/git-deploy/nginx.patch`
+	+ This could be done by creating a symlink (from your web root: `ln -s /var/git/github-deploy/webhhok.php github-deploy.php`).
+	+ Alternatively, configure directly in your webserver. Default nginx patch available in `nginx.patch` file (`patch /etc/nginx/sites-available/default < /var/git/git-deploy/nginx.patch`)
 + Reload webserver configuration.
 	+ `service nginx reload`
 + Test the webhook script is accessable by loading the server's IP browser with the path:
