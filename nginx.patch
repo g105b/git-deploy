@@ -4,7 +4,7 @@
  		try_files $uri $uri/ =404;
  	}
 
-+	location /webhook {
++	location /github-deploy {
 +		fastcgi_pass unix:/var/run/php5-fpm.sock;
 +		include fastcgi_params;
 +		fastcgi_param SERVER_NAME $host;
