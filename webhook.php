@@ -10,7 +10,8 @@ foreach(parse_ini_file(__DIR__ . "/config.ini") as $key => $value) {
 }
 
 $headers = getallheaders();
-$event = $headers["X-Github-Event"];
+$headers = array_change_key_case($headers);
+$event = $headers["x-github-event"];
 
 $payload_raw = file_get_contents("php://input");
 if(!$payload_raw) {
