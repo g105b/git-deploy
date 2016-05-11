@@ -45,7 +45,7 @@ Configuration options:
 
 ### Github administration.
 
-+ Go to the settings screen for the particular repository.
++ Go to the settings screen for the particular repository, or organisation (to configure all repositories at once).
 + Choose the `Webhooks & services` tab.
 + Add webhook:
 	+ URL: `http://xx.xx.xx.xx/webhook`
