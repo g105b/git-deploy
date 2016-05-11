@@ -27,6 +27,8 @@ if(empty($payload)) {
 $repoName = $payload->repository->full_name;
 $repoNameNoSlashes = str_replace("/", "_", $repoName);
 
+echo "Repo name: $repoNameNoSlashes" . PHP_EOL;
+
 if(is_dir(__DIR__ . "/config.d")) {
 	$iniFile = __DIR__ . "/config.d/$repoNameNoSlashes.ini";
 
