@@ -20,7 +20,7 @@ Note that the webhook can be called on `push` events or `status` events. Status 
 + Reload webserver configuration.
 	+ `service nginx reload`
 + Test the webhook script is accessable by loading the server's IP browser with the path:
-	+ `http://xx.xx.xx.xx/webhook`
+	+ `http://xx.xx.xx.xx/github-deploy` (or alternative path, as configured in steps above).
 
 ### Config files.
 
