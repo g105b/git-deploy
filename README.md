@@ -1,4 +1,4 @@
-# git-deploy
+# github-deploy
 
 Deploy to live using Git. Update the live server when the live branch is updated, or when CI tests pass.
 
