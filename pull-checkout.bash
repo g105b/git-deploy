@@ -16,8 +16,6 @@ echo "destination_path=$destination_path"
 echo "ssh_private_key=$ssh_private_key"
 echo "--------------"
 
-exit;
-
 if [ -z "$repo_dir" -o -z "$repo_url" ]; then
 	echo "Config value not set"
 	exit;
