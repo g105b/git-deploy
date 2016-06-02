@@ -5,8 +5,10 @@ if($_SERVER["REQUEST_METHOD"] === "GET") {
 	exit;
 }
 
+$config = [];
+
 foreach(parse_ini_file(__DIR__ . "/config.ini") as $key => $value) {
-	putenv("$key=$value");
+	$config[$key] = $value;
 }
 
 $headers = [];
@@ -63,27 +65,27 @@ if(is_dir(__DIR__ . "/config.d")) {
 	if(file_exists($iniFile)) {
 		foreach(parse_ini_file($iniFile) as $key => $value) {
 			$value = str_replace("{repo}", $repoNameNoSlashes, $value);
-			if(getenv("webhook_branch") === "*") {
+			if($config["webhook_branch"] === "*") {
 				$value = str_replace("{branch}", $receivedBranch, $value);
 			}
 
-			putenv("$key=$value");
+			$config[$key] = $value;
 		}
 	}
 }
 
-$branchToAction = getenv("webhook_branch");
+$branchToAction = $config["webhook_branch"];
 
 echo "Repo name: $repoNameNoSlashes" . PHP_EOL;
 echo "Received branch: $receivedBranch" . PHP_EOL;
 echo "Branch to action: $branchToAction" . PHP_EOL;
 
 list($algo, $hash) = explode("=", $headers["X-Hub-Signature"], 2);
-$payload_hash = hash_hmac($algo, $payload_raw, getenv("webhook_secret"));
+$payload_hash = hash_hmac($algo, $payload_raw, $config["webhook_secret"]);
 
 if($hash !== $payload_hash) {
 	http_response_code(401);
-	if(empty(getenv("webhook_secret"))) {
+	if(empty($config["webhook_secret"])) {
 		echo "ERROR: webhook_secret environment variable is not set."
 			. PHP_EOL;
 	}
@@ -100,7 +102,7 @@ if($event === "ping") {
 	exit;
 }
 
-$eventToContinue = getenv("webhook_event");
+$eventToContinue = $config["webhook_event"];
 if(!$eventToContinue) {
 	$eventToContinue = "push";
 }
@@ -124,12 +126,25 @@ if($eventToContinue === "status"
 	exit;
 }
 
-$pullCheckoutScriptPath = __DIR__ . "/pull-checkout.bash $repoNameNoSlashes";
+$pullCheckoutScriptPath = "";
+
+unset($config["webhook_secret"]);
+foreach ($config as $key => $value) {
+	$value = escapeshellarg($value);
+	$value = "\"$value\"";
+	$pullCheckoutScriptPath .= "$key=$value ";
+}
+
+echo "OK: Executing pull-checkout.bash" . PHP_EOL;
+echo $pullCheckoutScriptPath . PHP_EOL;
+echo str_repeat("-", 80) . PHP_EOL;
+
+$pullCheckoutScriptPath .= __DIR__ . "/pull-checkout.bash $repoNameNoSlashes";
 exec($pullCheckoutScriptPath . " 2>&1", $responseArray);
 
 $response = implode("\n", $responseArray);
 
-$logPath = getenv("webhook_log_path");
+$logPath = $config["webhook_log_path"];
 if($logPath !== false) {
 	file_put_contents(
 		$logPath,
