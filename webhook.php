@@ -55,6 +55,14 @@ $payload_hash = hash_hmac($algo, $payload_raw, getenv("webhook_secret"));
 
 if($hash !== $payload_hash) {
 	http_response_code(401);
+	if(empty(getenv("webhook_secret"))) {
+		echo "ERROR: webhook_secret environment variable is not set."
+			. PHP_EOL;
+	}
+	else {
+		echo "ERROR: webhook_secret does not match request signature."
+			. PHP_EOL;
+	}
 	throw new Exception("Authentication failure");
 }
 
