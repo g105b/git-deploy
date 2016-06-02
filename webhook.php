@@ -26,12 +26,14 @@ $event = $headers["X-GitHub-Event"];
 $payload_raw = file_get_contents("php://input");
 if(!$payload_raw) {
 	http_response_code(400);
+	echo "ERROR: No payload attached to request." . PHP_EOL;
 	throw new Exception("Reading payload failed");
 }
 
 $payload = json_decode($payload_raw);
 if(empty($payload)) {
 	http_response_code(500);
+	echo "ERROR: Payload not valid JSON" . PHP_EOL;
 	throw new Exception("Failure parsing payload");
 }
 
