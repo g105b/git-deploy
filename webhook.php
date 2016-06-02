@@ -22,7 +22,7 @@ foreach($_SERVER as $key => $value) {
 }
 
 $event = $headers["X-Github-Event"];
-echo "Github event received: $event";
+echo "Github event received: $event" . PHP_EOL;
 
 $payload_raw = file_get_contents("php://input");
 if(!$payload_raw) {
