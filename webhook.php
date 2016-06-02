@@ -8,6 +8,10 @@ if($_SERVER["REQUEST_METHOD"] === "GET") {
 $config = [];
 
 foreach(parse_ini_file(__DIR__ . "/config.ini") as $key => $value) {
+	if(trim($key)[0] === "#") {
+		continue;
+	}
+
 	$config[$key] = $value;
 }
 
