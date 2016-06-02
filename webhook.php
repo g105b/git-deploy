@@ -21,7 +21,7 @@ foreach($_SERVER as $key => $value) {
 	}
 }
 
-$event = $headers["X-GitHub-Event"];
+$event = $headers["X-Github-Event"];
 
 $payload_raw = file_get_contents("php://input");
 if(!$payload_raw) {
