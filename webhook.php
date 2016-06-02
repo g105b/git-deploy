@@ -135,7 +135,6 @@ $pullCheckoutScriptPath = "";
 unset($config["webhook_secret"]);
 foreach ($config as $key => $value) {
 	$value = escapeshellarg($value);
-	$value = "\"$value\"";
 	$pullCheckoutScriptPath .= "$key=$value ";
 }
 
