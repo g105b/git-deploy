@@ -78,11 +78,11 @@ if(is_dir(__DIR__ . "/config.d")) {
 	}
 }
 
-$branchToAction = $config["webhook_branch"];
+$activeBranch = $config["webhook_branch"];
 
 echo "Repo name: $repoNameNoSlashes" . PHP_EOL;
 echo "Received branch: $receivedBranch" . PHP_EOL;
-echo "Branch to action: $branchToAction" . PHP_EOL;
+echo "Branch to action: $activeBranch" . PHP_EOL;
 
 list($algo, $hash) = explode("=", $headers["X-Hub-Signature"], 2);
 $payload_hash = hash_hmac($algo, $payload_raw, $config["webhook_secret"]);
@@ -111,9 +111,9 @@ if(!$eventToContinue) {
 	$eventToContinue = "push";
 }
 
-if($branchToAction !== "*" && $receivedBranch !== $branchToAction) {
+if($activeBranch !== "*" && $receivedBranch !== $activeBranch) {
 	http_response_code(200);
-	echo "Waiting for branch $branchToAction - $receivedBranch received.";
+	echo "Waiting for branch $activeBranch - $receivedBranch received.";
 	exit;
 }
 
@@ -133,6 +133,7 @@ if($eventToContinue === "status"
 $pullCheckoutScriptPath = "";
 
 unset($config["webhook_secret"]);
+$config["active_branch"] = $activeBranch;
 foreach ($config as $key => $value) {
 	$value = escapeshellarg($value);
 	$pullCheckoutScriptPath .= "$key=$value ";
