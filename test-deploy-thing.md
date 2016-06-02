@@ -6,6 +6,7 @@
 * Create new empty Github repo called `test-deploy-thing`.
 * Generate ssh keys on server at `/var/git/id_rsa`.
 * Add public key to Github repo's deploy key.
+* Add path to private key to config.ini (uncomment).
 * Add webhook to Github repo settings to same URL as above.
 * Create a secret to paste into the config file on the server.
 * Choose "send everything".
