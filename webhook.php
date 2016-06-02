@@ -22,6 +22,7 @@ foreach($_SERVER as $key => $value) {
 }
 
 $event = $headers["X-Github-Event"];
+echo "Github event received: $event";
 
 $payload_raw = file_get_contents("php://input");
 if(!$payload_raw) {
@@ -39,6 +40,7 @@ if(empty($payload)) {
 
 $repoName = $payload->repository->full_name;
 $repoNameNoSlashes = str_replace("/", "_", $repoName);
+
 $branchToAction = getenv("webhook_branch");
 $receivedBranch = isset($payload->ref) ? $payload->ref : null;
 if($receivedBranch) {
@@ -56,8 +58,6 @@ else {
 	}
 }
 
-echo "Repo name: $repoNameNoSlashes" . PHP_EOL;
-
 if(is_dir(__DIR__ . "/config.d")) {
 	$iniFile = __DIR__ . "/config.d/$repoNameNoSlashes.ini";
 
@@ -72,6 +72,10 @@ if(is_dir(__DIR__ . "/config.d")) {
 		}
 	}
 }
+
+echo "Repo name: $repoNameNoSlashes" . PHP_EOL;
+echo "Received branch: $receivedBranch" . PHP_EOL;
+echo "Branch to action: $branchToAction" . PHP_EOL;
 
 list($algo, $hash) = explode("=", $headers["X-Hub-Signature"], 2);
 $payload_hash = hash_hmac($algo, $payload_raw, getenv("webhook_secret"));
@@ -102,7 +106,7 @@ if(!$eventToContinue) {
 
 if($branchToAction !== "*" && $receivedBranch !== $branchToAction) {
 	http_response_code(200);
-	echo "Waiting for $branchToAction - $receivedBranch received.";
+	echo "Waiting for branch $branchToAction - $receivedBranch received.";
 	exit;
 }
 
@@ -114,6 +118,7 @@ if($event !== $eventToContinue) {
 
 if($eventToContinue === "status"
 && $payload->state !== "success") {
+	echo "Waiting for event $eventToContinue - {$payload->state} received.";
 	http_response_code(204);
 	exit;
 }
