@@ -39,8 +39,22 @@ if(empty($payload)) {
 
 $repoName = $payload->repository->full_name;
 $repoNameNoSlashes = str_replace("/", "_", $repoName);
-// $branch = $payload->repository->
-$branch = "branch-name-here";
+$branch = getenv("webhook_branch");
+$receivedBranch = isset($payload->ref) ? $payload->ref : null;
+if($receivedBranch) {
+	$receivedBranch = substr(
+		$receivedBranch,
+		strrpos($receivedBranch, "/") + 1
+	);
+}
+else {
+	foreach ($payload->branches as $b) {
+		if($payload->sha === $b->commit->sha) {
+			$receivedBranch = $b->name;
+			break;
+		}
+	}
+}
 
 echo "Repo name: $repoNameNoSlashes" . PHP_EOL;
 
@@ -51,7 +65,7 @@ if(is_dir(__DIR__ . "/config.d")) {
 		foreach(parse_ini_file($iniFile) as $key => $value) {
 			$value = str_replace("{repo}", $repoNameNoSlashes, $value);
 			if(getenv("webhook_branch") === "*") {
-				$value = str_replace("{branch}", $branch, $value);
+				$value = str_replace("{branch}", $receivedBranch, $value);
 			}
 
 			putenv("$key=$value");
@@ -86,24 +100,7 @@ if(!$eventToContinue) {
 	$eventToContinue = "push";
 }
 
-$branch = getenv("webhook_branch");
-$receivedBranch = isset($payload->ref) ? $payload->ref : null;
-if($receivedBranch) {
-	$receivedBranch = substr(
-		$receivedBranch,
-		strrpos($receivedBranch, "/") + 1
-	);
-}
-else {
-	foreach ($payload->branches as $b) {
-		if($payload->sha === $b->commit->sha) {
-			$receivedBranch = $b->name;
-			break;
-		}
-	}
-}
-
-if($receivedBranch !== $branch) {
+if($branch !== "*" && $receivedBranch !== $branch) {
 	http_response_code(200);
 	echo "Waiting for $branch - $receivedBranch received.";
 	exit;
