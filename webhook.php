@@ -41,7 +41,6 @@ if(empty($payload)) {
 $repoName = $payload->repository->full_name;
 $repoNameNoSlashes = str_replace("/", "_", $repoName);
 
-$branchToAction = getenv("webhook_branch");
 $receivedBranch = isset($payload->ref) ? $payload->ref : null;
 if($receivedBranch) {
 	$receivedBranch = substr(
@@ -72,6 +71,8 @@ if(is_dir(__DIR__ . "/config.d")) {
 		}
 	}
 }
+
+$branchToAction = getenv("webhook_branch");
 
 echo "Repo name: $repoNameNoSlashes" . PHP_EOL;
 echo "Received branch: $receivedBranch" . PHP_EOL;
