@@ -133,7 +133,7 @@ if($eventToContinue === "status"
 $pullCheckoutScriptPath = "";
 
 unset($config["webhook_secret"]);
-$config["received_branch"] = $received_branch;
+$config["received_branch"] = $receivedBranch;
 foreach ($config as $key => $value) {
 	$value = escapeshellarg($value);
 	$pullCheckoutScriptPath .= "$key=$value ";
