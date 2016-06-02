@@ -12,9 +12,10 @@
 * Choose "send everything".
 * Webhook will 401 because webhook_secret is not yet set.
 * Copy the repo name from the response.
-* `mkdir /var/git/github-deploy/config.d`.
-* Copy config.ini into the config.d directory, rename to `copied-repo-name.ini`.
+* `mkdir -p /var/git/github-deploy/config.d`.
+* Copy config.ini into config.d directory, rename to `copied-repo-name.ini`.
 * Edit repo's config - `webhook_branch=*` for all repos - to make dynamic.
 * `repo_dir=/var/git/{repo}/{branch}` for dynamic clones branches.
 * `destination_path=/var/www/{repo}/{branch}` for dynamic checkouts.
 * Or, use `/var/www/www.example.com/{branch}` if necessary.
+* Ensure webserver can write to /var/git and /var/www
