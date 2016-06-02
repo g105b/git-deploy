@@ -13,7 +13,7 @@
 * Copy the repo name from the response.
 * `mkdir /var/git/github-deploy/config.d`.
 * Copy config.ini into the config.d directory, rename to `copied-repo-name.ini`.
-* Edit repo's config - `webhook_branch=*` for all repos.
+* Edit repo's config - `webhook_branch=*` for all repos - to make dynamic.
 * `repo_dir=/var/git/{repo}/{branch}` for dynamic clones branches.
 * `destination_path=/var/www/{repo}/{branch}` for dynamic checkouts.
 * Or, use `/var/www/www.example.com/{branch}` if necessary.
