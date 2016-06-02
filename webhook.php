@@ -39,7 +39,7 @@ if(empty($payload)) {
 
 $repoName = $payload->repository->full_name;
 $repoNameNoSlashes = str_replace("/", "_", $repoName);
-$branch = getenv("webhook_branch");
+$branchToAction = getenv("webhook_branch");
 $receivedBranch = isset($payload->ref) ? $payload->ref : null;
 if($receivedBranch) {
 	$receivedBranch = substr(
@@ -100,9 +100,9 @@ if(!$eventToContinue) {
 	$eventToContinue = "push";
 }
 
-if($branch !== "*" && $receivedBranch !== $branch) {
+if($branchToAction !== "*" && $receivedBranch !== $branchToAction) {
 	http_response_code(200);
-	echo "Waiting for $branch - $receivedBranch received.";
+	echo "Waiting for $branchToAction - $receivedBranch received.";
 	exit;
 }
 
