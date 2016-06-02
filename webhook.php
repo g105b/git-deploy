@@ -9,7 +9,18 @@ foreach(parse_ini_file(__DIR__ . "/config.ini") as $key => $value) {
 	putenv("$key=$value");
 }
 
-$headers = getallheaders();
+$headers = [];
+
+foreach($_SERVER as $key => $value) {
+	if(substr($key, 0, 5) === "HTTP_") {
+		$fullKey = str_replace("_", " ", substr($key, 5));
+		$fullKey = ucwords(strtolower($fullKey));
+		$fullKey = str_replace(" ", "-", $fullKey);
+
+		$headers[$fullKey] = $value;
+	}
+}
+
 $event = $headers["X-GitHub-Event"];
 
 $payload_raw = file_get_contents("php://input");
