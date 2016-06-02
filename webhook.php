@@ -37,6 +37,8 @@ if(empty($payload)) {
 
 $repoName = $payload->repository->full_name;
 $repoNameNoSlashes = str_replace("/", "_", $repoName);
+// $branch = $payload->repository->
+$branch = "branch-name-here";
 
 echo "Repo name: $repoNameNoSlashes" . PHP_EOL;
 
@@ -45,6 +47,11 @@ if(is_dir(__DIR__ . "/config.d")) {
 
 	if(file_exists($iniFile)) {
 		foreach(parse_ini_file($iniFile) as $key => $value) {
+			$value = str_replace("{repo}", $repoNameNoSlashes, $value);
+			if(getenv("webhook_branch") === "*") {
+				$value = str_replace("{branch}", $branch, $value);
+			}
+
 			putenv("$key=$value");
 		}
 	}
