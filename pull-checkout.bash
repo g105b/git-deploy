@@ -35,6 +35,7 @@ if [ ! -d $repo_dir ]; then
 fi
 
 cd $repo_dir
+git checkout $received_branch
 git_cmd="git pull $repo_url"
 if [ -n $ssh_private_key ]; then
 	git_cmd="GIT_SSH_COMMAND='ssh -i $ssh_private_key -o StrictHostKeyChecking=no' $git_cmd"
