@@ -46,6 +46,13 @@ git_cmd="git checkout $received_branch"
 echo "Running git command: $git_cmd"
 eval $git_cmd
 
+git_cmd="git pull"
+if [ -n $ssh_private_key ]; then
+	git_cmd="GIT_SSH_COMMAND='ssh -i $ssh_private_key -o StrictHostKeyChecking=no' $git_cmd"
+fi
+echo "Running git command: $git_cmd"
+eval $git_cmd
+
 if [ ! -f $destination_path ]; then
 	mkdir -p $destination_path
 fi
