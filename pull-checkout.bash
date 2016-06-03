@@ -46,7 +46,7 @@ eval $git_cmd
 if [ ! -f $destination_path ]; then
 	mkdir -p $destination_path
 fi
-echo "Running git command: git --work-tree=$destination_path --git-dir=$repo_dir/.git checkout $received_branch -f"
+echo "Running git command: git --work-tree=$destination_path --git-dir=$repo_dir/.git checkout -f"
 
 git --work-tree=$destination_path --git-dir=$repo_dir/.git checkout $received_branch -f
 
