@@ -35,11 +35,14 @@ if [ ! -d $repo_dir ]; then
 fi
 
 cd $repo_dir
-git checkout $received_branch
-git_cmd="git pull $repo_url"
+git_cmd="git fetch $repo_url"
 if [ -n $ssh_private_key ]; then
 	git_cmd="GIT_SSH_COMMAND='ssh -i $ssh_private_key -o StrictHostKeyChecking=no' $git_cmd"
 fi
+echo "Running git command: $git_cmd"
+eval $git_cmd
+
+git_cmd="git checkout $received_branch"
 echo "Running git command: $git_cmd"
 eval $git_cmd
 
