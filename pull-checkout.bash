@@ -23,7 +23,7 @@ fi
 
 if [ ! -d $repo_dir ]; then
 	mkdir -p $repo_dir
-	echo "Cloning $repo_url into $repo_dir on branch $webhook_branch"
+	echo "Cloning $repo_url into $repo_dir on branch $received_branch"
 	git_cmd="git clone $repo_url $repo_dir"
 
 	if [ -n $ssh_private_key ]; then
@@ -42,13 +42,14 @@ fi
 echo "Running git command: $git_cmd"
 eval $git_cmd
 
-echo "Running git command: git --work-tree=$destination_path --git-dir=$repo_dir/.git checkout -f"
 if [ ! -f $destination_path ]; then
 	mkdir -p $destination_path
 fi
+echo "Running git command: git --work-tree=$destination_path --git-dir=$repo_dir/.git checkout $received_branch -f"
 
-git --work-tree=$destination_path --git-dir=$repo_dir/.git checkout -f
+git --work-tree=$destination_path --git-dir=$repo_dir/.git checkout $received_branch -f
 
+echo "-----------------------------"
 echo "Running post-checkout scripts"
 
 if [ -f "$dir/post-checkout.bash" ]; then
