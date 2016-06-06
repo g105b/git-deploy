@@ -108,6 +108,7 @@ if(!empty($dbMigrationPath)) {
 			echo "Total subqueries: " . count($queryLines) . PHP_EOL;
 
 			foreach ($queryLines as $q) {
+				$q = trim($q, " \n\t;-#");
 				$subQuery++;
 				echo "Subquery $subQuery ... ";
 				$dbh->exec($q) . ";";
