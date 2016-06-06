@@ -53,7 +53,7 @@ fi
 echo "Running git command: $git_cmd"
 eval $git_cmd
 
-destination_path=echo "$destination_path | tr '[:upper:]' '[:lower:]'"
+destination_path=$(echo "$destination_path" | tr '[:upper:]' '[:lower:]')
 if [ ! -f $destination_path ]; then
 	mkdir -p $destination_path
 fi
