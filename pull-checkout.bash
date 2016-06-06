@@ -53,6 +53,7 @@ fi
 echo "Running git command: $git_cmd"
 eval $git_cmd
 
+destination_path=echo "$destination_path | tr '[:upper:]' '[:lower:]'"
 if [ ! -f $destination_path ]; then
 	mkdir -p $destination_path
 fi
@@ -63,16 +64,21 @@ git --work-tree=$destination_path --git-dir=$repo_dir/.git checkout $received_br
 echo "-----------------------------"
 echo "Running post-checkout scripts"
 
+vars="webhook_event=$webhook_event webhook_branch=$webhook_branch received_branch=$received_branch webhook_log_path=$webhook_log_path repo_url=$repo_url repo_dir=$repo_dir destination_path=$destination_path ssh_private_key=$ssh_private_key"
+
 if [ -f "$dir/post-checkout.bash" ]; then
 	echo "Running generic post-checkout.bash"
-	eval "$dir/post-checkout.bash $1"
+	$cmd="$vars $dir/post-checkout.bash $1"
+	echo "Command: $cmd"
+	eval $cmd;
 else
 	echo "Generic post-checkout.bash not found ( $dir/post-checkout.bash )"
 fi
 
 if [ -d "$dir/post-checkout.d" ]; then
 	if [ -f "$dir/post-checkout.d/$1.bash" ]; then
-		echo "Running post-checkout $1"
-		eval "$dir/post-checkout.d/$1.bash"
+		echo "Running post-checkout"
+		$cmd="$vars $dir/post-checkout.d/$1.bash"
+		eval $cmd
 	fi
 fi
