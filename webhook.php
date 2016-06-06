@@ -28,6 +28,12 @@ foreach($_SERVER as $key => $value) {
 }
 
 $event = $headers["X-Github-Event"];
+if($event === "ping") {
+	http_response_code(200);
+	echo "pong";
+	exit;
+}
+
 echo "Github event received: $event" . PHP_EOL;
 
 $payload_raw = file_get_contents("php://input");
@@ -98,12 +104,6 @@ if($hash !== $payload_hash) {
 			. PHP_EOL;
 	}
 	throw new Exception("Authentication failure");
-}
-
-if($event === "ping") {
-	http_response_code(200);
-	echo "pong";
-	exit;
 }
 
 $eventToContinue = $config["webhook_event"];
