@@ -17,4 +17,4 @@ export ssh_private_key=$ssh_private_key
 eval "$dir/db.php $1"
 
 cd $destination_path
-composer install >/dev/null 2>&1 & || echo "No composer found, continuing."
+composer install >/dev/null 2>&1 &
