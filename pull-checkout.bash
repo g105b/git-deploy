@@ -68,7 +68,7 @@ vars="webhook_event=$webhook_event webhook_branch=$webhook_branch received_branc
 
 if [ -f "$dir/post-checkout.bash" ]; then
 	echo "Running generic post-checkout.bash"
-	$cmd="$vars $dir/post-checkout.bash $1"
+	cmd="$vars $dir/post-checkout.bash $1"
 	echo "Command: $cmd"
 	eval $cmd;
 else
@@ -78,7 +78,8 @@ fi
 if [ -d "$dir/post-checkout.d" ]; then
 	if [ -f "$dir/post-checkout.d/$1.bash" ]; then
 		echo "Running post-checkout"
-		$cmd="$vars $dir/post-checkout.d/$1.bash"
+		cmd="$vars $dir/post-checkout.d/$1.bash"
+		echo "Command: $cmd"
 		eval $cmd
 	fi
 fi
