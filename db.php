@@ -24,6 +24,7 @@ if(!empty($dbMigrationPath)) {
 	}
 
 	$db_name = getenv("db_name");
+	$db_name = strtolower($db_name);
 	try {
 		$dbh->exec("create database if not exists `$db_name`");
 		$dbh->exec("use `$db_name`");
