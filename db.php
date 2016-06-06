@@ -108,7 +108,8 @@ if(!empty($dbMigrationPath)) {
 			echo "Total subqueries: " . count($queryLines) . PHP_EOL;
 
 			foreach ($queryLines as $q) {
-				$q = trim($q, " \n\t;-#");
+				$q = trim($q, " \n\t");
+
 				if(empty($q)) {
 					continue;
 				}
