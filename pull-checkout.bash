@@ -82,3 +82,5 @@ if [ -d "$dir/post-checkout.d" ]; then
 		eval $cmd
 	fi
 fi
+
+echo "Completed pull-checkout"

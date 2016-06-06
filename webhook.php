@@ -157,4 +157,6 @@ if($logPath !== false) {
 	);
 }
 
-echo $response;
+echo $response . PHP_EOL;
+
+echo PHP_EOL . "All scripts completed successfully." . PHP_EOL;
