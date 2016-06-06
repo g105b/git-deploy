@@ -109,6 +109,10 @@ if(!empty($dbMigrationPath)) {
 
 			foreach ($queryLines as $q) {
 				$q = trim($q, " \n\t;-#");
+				if(empty($q)) {
+					continue;
+				}
+
 				$subQuery++;
 				echo "Subquery $subQuery ... ";
 				$dbh->exec($q) . ";";
