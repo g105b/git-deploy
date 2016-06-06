@@ -14,6 +14,9 @@ foreach(parse_ini_file(__DIR__ . "/config.ini") as $key => $value) {
 
 	$config[$key] = $value;
 }
+if(isset($config["db_name"])) {
+	$config["db_name"] = strtolower($config["db_name"]);
+}
 
 $headers = [];
 
