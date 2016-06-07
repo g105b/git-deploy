@@ -28,3 +28,5 @@ fi
 if [ -d $destination_path ]; then
 	rm -rf $destination_path
 fi
+
+eval "$dir/db.php $1 delete"
