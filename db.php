@@ -129,8 +129,10 @@ if(!empty($dbMigrationPath)) {
 				$subQuery++;
 				echo "Subquery $subQuery ... ";
 				$dbh->exec($q) . ";";
-				echo "complete" . PHP_EOL;
+				echo "complete. ";
 			}
+
+			echo PHP_EOL;
 
 			$currentMigrationValue = $number;
 			$dbh->exec(implode("\n", [
