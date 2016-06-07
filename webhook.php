@@ -109,6 +109,28 @@ if($hash !== $payload_hash) {
 	throw new Exception("Authentication failure");
 }
 
+unset($config["webhook_secret"]);
+$config["received_branch"] = $receivedBranch;
+$configString = "";
+foreach ($config as $key => $value) {
+	$value = escapeshellarg($value);
+	$configString .= "$key=$value ";
+}
+
+if($payload->deleted === true) {
+	$deleteBranchScriptPath = $configString
+		. __DIR__ . "/delete-branch.bash $repoNameNoSlashes";
+
+	echo "OK: Executing delete-branch.bash" . PHP_EOL;
+	echo $deleteBranchScriptPath . PHP_EOL;
+	echo str_repeat("-", 80) . PHP_EOL;
+
+	exec($deleteBranchScriptPath . " 2>&1", $responseArray);
+	$response = implode("\n", $responseArray);
+	echo $response . PHP_EOL;
+	exit;
+}
+
 $eventToContinue = $config["webhook_event"];
 if(!$eventToContinue) {
 	$eventToContinue = "push";
@@ -133,20 +155,13 @@ if($eventToContinue === "status"
 	exit;
 }
 
-$pullCheckoutScriptPath = "";
-
-unset($config["webhook_secret"]);
-$config["received_branch"] = $receivedBranch;
-foreach ($config as $key => $value) {
-	$value = escapeshellarg($value);
-	$pullCheckoutScriptPath .= "$key=$value ";
-}
+$pullCheckoutScriptPath = $configString
+	. __DIR__ . "/pull-checkout.bash $repoNameNoSlashes";
 
 echo "OK: Executing pull-checkout.bash" . PHP_EOL;
 echo $pullCheckoutScriptPath . PHP_EOL;
 echo str_repeat("-", 80) . PHP_EOL;
 
-$pullCheckoutScriptPath .= __DIR__ . "/pull-checkout.bash $repoNameNoSlashes";
 exec($pullCheckoutScriptPath . " 2>&1", $responseArray);
 
 $response = implode("\n", $responseArray);

@@ -14,7 +14,7 @@ if(!empty($dbMigrationPath)) {
 	}
 	catch(PDOException $e) {
 		die("Error connecting to database to perform migrations. "
-			. $e->getMessage()
+			. $e->getMessage() . PHP_EOL
 		);
 	}
 
@@ -25,12 +25,23 @@ if(!empty($dbMigrationPath)) {
 
 	$db_name = getenv("db_name");
 	$db_name = strtolower($db_name);
+
+	if(isset($argv[2]) && $argv[2] === "delete") {
+		try {
+			$dbh->exec("drop database `$db_name`");
+			echo "Completed db removal script." . PHP_EOL;
+			exit;
+		}
+		catch(PDOException $e) {
+			die("Failed deleting database: $db_name" . PHP_EOL);
+		}
+	}
 	try {
 		$dbh->exec("create database if not exists `$db_name`");
 		$dbh->exec("use `$db_name`");
 	}
 	catch(PDOException $e) {
-		die("Failed setting database name to: $db_name");
+		die("Failed setting database name to: $db_name" . PHP_EOL);
 	}
 
 	try {
@@ -44,7 +55,7 @@ if(!empty($dbMigrationPath)) {
 	}
 	catch(PDOException $e) {
 		die("Failed creating migration table. "
-			. $e->getMessage());
+			. $e->getMessage() . PHP_EOL);
 	}
 
 	try {
@@ -58,7 +69,7 @@ if(!empty($dbMigrationPath)) {
 	}
 	catch(PDOException $e) {
 		die("Failed fetching migration version. "
-			. $e->getMessage());
+			. $e->getMessage() . PHP_EOL);
 	}
 
 	if($result) {
