@@ -1,4 +1,10 @@
 <?php
+/**
+ * Serve this script as the webhook's Payload URL.
+ *
+ * Configure the webhook with config.ini for generic settings, or individually
+ * per repository using .ini files within the config.d directory.
+ */
 if($_SERVER["REQUEST_METHOD"] === "GET") {
 	http_response_code(200);
 	echo "Webhook script installed successfully";
