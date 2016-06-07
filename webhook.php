@@ -162,9 +162,9 @@ if($eventToContinue === "status"
 }
 
 $pullCheckoutScriptPath = $configString
-	. __DIR__ . "/pull-checkout.bash $repoNameNoSlashes";
+	. __DIR__ . "/before-checkout.bash $repoNameNoSlashes";
 
-echo "OK: Executing pull-checkout.bash" . PHP_EOL;
+echo "OK: Executing before-checkout.bash" . PHP_EOL;
 echo $pullCheckoutScriptPath . PHP_EOL;
 echo str_repeat("-", 80) . PHP_EOL;
 
