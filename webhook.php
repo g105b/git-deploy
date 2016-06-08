@@ -64,10 +64,12 @@ $repoNameNoSlashes = str_replace("/", "_", $repoName);
 
 $receivedBranch = isset($payload->ref) ? $payload->ref : null;
 if($receivedBranch) {
-	$receivedBranch = substr(
-		$receivedBranch,
-		strrpos($receivedBranch, "/") + 1
-	);
+	if(strstr($receivedBranch, "/")) {
+		$receivedBranch = substr(
+			$receivedBranch,
+			strrpos($receivedBranch, "/") + 1
+		);
+	}
 }
 else {
 	foreach ($payload->branches as $b) {
