@@ -85,14 +85,16 @@ if(is_dir(__DIR__ . "/config.d")) {
 
 	if(file_exists($iniFile)) {
 		foreach(parse_ini_file($iniFile) as $key => $value) {
-			$value = str_replace("{repo}", $repoNameNoSlashes, $value);
-			if($config["webhook_branch"] === "*") {
-				$value = str_replace("{branch}", $receivedBranch, $value);
-			}
-
 			$config[$key] = $value;
 		}
 	}
+}
+
+foreach ($config as $key => $value) {
+	$value = str_replace("{repo}", $repoNameNoSlashes, $value);
+	$value = str_replace("{branch}", $receivedBranch, $value);
+
+	$config[$key] = $value;
 }
 
 $activeBranch = $config["webhook_branch"];
