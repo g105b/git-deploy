@@ -1,6 +1,6 @@
 # github-deploy
 
-Automatically deploy one, multiple or all branches to a server from Github. Either update the server when a push is made, or when existing CI tests pass.
+Automatically deploy all branches from Github. Either update the server when a push is made, or when existing CI tests pass. For PHP projects.
 
 ## Usage.
 
