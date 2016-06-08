@@ -125,6 +125,8 @@ foreach ($config as $key => $value) {
 	$configString .= "$key=$value ";
 }
 
+$config["destination_path"] = strtolower($config["destination_path"]);
+
 if($event === "delete") {
 	$deleteBranchScriptPath = $configString
 		. __DIR__ . "/delete-branch.bash $repoNameNoSlashes "
