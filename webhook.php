@@ -123,9 +123,10 @@ foreach ($config as $key => $value) {
 	$configString .= "$key=$value ";
 }
 
-if($payload->deleted === true) {
+if($event === "delete") {
 	$deleteBranchScriptPath = $configString
-		. __DIR__ . "/delete-branch.bash $repoNameNoSlashes";
+		. __DIR__ . "/delete-branch.bash $repoNameNoSlashes "
+		. "$receivedBranch $repo_dir $destination_path";
 
 	echo "OK: Executing delete-branch.bash" . PHP_EOL;
 	echo $deleteBranchScriptPath . PHP_EOL;

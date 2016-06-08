@@ -2,31 +2,18 @@
 set -e
 dir="$(dirname "$0")"
 
-echo "Config values:"
-echo "webhook_event=$webhook_event"
-echo "webhook_branch=$webhook_branch"
-echo "received_branch=$received_branch"
-echo "webhook_log_path=$webhook_log_path"
-echo "repo_url=$repo_url"
-echo "repo_dir=$repo_dir"
-echo "destination_path=$destination_path"
-echo "ssh_private_key=$ssh_private_key"
-echo "--------------"
-echo "db_dsn=$db_dsn"
-echo "db_migration_path=$db_migration_path"
-echo "db_host=$db_host"
-echo "db_name=$db_name"
-echo "db_user=$db_user"
-echo "db_pass=$db_pass"
-echo "db_table=$db_table"
+echo "Deleting branch from $1"
+echo "Branch to delete: $2"
+echo "Repo dir: $3"
+echo "Destination path $4"
 echo "--------------"
 
-if [ -d $repo_dir ]; then
-	rm -rf $repo_dir
+if [ -d $3 ]; then
+	rm -rf $3
 fi
 
-if [ -d $destination_path ]; then
-	rm -rf $destination_path
+if [ -d $4 ]; then
+	rm -rf $4
 fi
 
 eval "$dir/db.php $1 delete"
