@@ -28,7 +28,7 @@ if(!empty($dbMigrationPath)) {
 
 	if(isset($argv[2]) && $argv[2] === "delete") {
 		try {
-			$dbh->exec("drop database `$db_name`");
+			$dbh->exec("drop database if exists `$db_name`");
 			echo "Completed db removal script." . PHP_EOL;
 			exit;
 		}
