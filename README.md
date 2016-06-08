@@ -1,26 +1,45 @@
 # github-deploy
 
-Deploy to live using Github. Update the live server when the live branch is updated, or when CI tests pass.
+Automatically deploy one, multiple or all branches to a server from Github. Either update the server when a push is made, or when existing CI tests pass.
 
 ## Usage.
 
 Note that the webhook can be called on `push` events or `status` events. Status events will be automatically dispatched by Github if a CI system is correctly set up. When using the status event, only success statuses will be used.
 
-### Live server administration.
+### Step by step server setup.
 
-+ Make directory `/var/git`
++ Make directory `/var/git`.
 + Clone git-deploy.
-	+ `git clone https://github.com/g105b/git-deploy /var/git/git-deploy`
-+ Add environment variables to `/var/git/config.ini`, e.g. :
-	+ `webhook_secret=secret-to-give-to-github`
-	+ `webhook_log_path=/var/git/webhook.log`
-+ Configure webserver to respond to `/github-deploy` requests by passing directly to `/var/git/github-deploy/webhook.php` or similar URL of your choice.
-	+ This could be done by creating a symlink (from your web root: `ln -s /var/git/github-deploy/webhhok.php github-deploy.php`).
-	+ Alternatively, configure directly in your webserver. Default nginx patch available in `nginx.patch` file (`patch /etc/nginx/sites-available/default < /var/git/git-deploy/nginx.patch`)
-+ Reload webserver configuration.
-	+ `service nginx reload`
-+ Test the webhook script is accessable by loading the server's IP browser with the path:
-	+ `http://xx.xx.xx.xx/github-deploy` (or alternative path, as configured in steps above).
+	+ `git clone https://github.com/g105b/git-deploy /var/git/git-deploy`.
++ Serve `webhook.php` on `https://you-server-ip/github-deploy`.
+	+ See `nginx.patch` for default server block settings.
+	+ You should see "Webhook script installed successfully".
++ Generate SSH deploy key for your repository.
+	+ `ssh-keygen -t rsa -b 4096 -C "repo@server-name"`.
+	+ Name the keys according to the repository name.
+	+ Ensure webserver's user can read private key file.
+	+ Add public key to Github repo's deploy key list.
++ Add Github webook to repository settings on same URL as above.
+	+ Create a secret and paste into the repo's config file.
+	+ Choose "Send everything".
+	+ Webhook will show "pong" response to Github's "ping".
+	+ Copy the repo name from the response.
++ Create a configuration file for your repository.
+	+ `cp config.ini config.d/YourOrgName_RepoName.ini`.
+	+ Name of the ini file is the coppied repo name from webhook response.
+	+ Set path to keys in the config file.
+	+ Configure database if required.
++ Ensure webserver can write to `/var/git` and `/var/www`
++ Install `composer` globally (for PHP projects that use Composer).
+
+#### Deploy all branches.
+
++ Add `webhook_branch=*` to listen on all branches.
++ Set `repo_dir` to the path to the github repo on the server.
+	+ Use {repo} and {branch} placeholders.
+	+ e.g. `repo_dir=/var/git/{repo}/{branch}`
+- Set `destination_path` to public location of served files.
+	+ e.g. `destination_path=/var/www/{repo}/{branch}`
 
 ### Config files.
 
@@ -31,13 +50,13 @@ Configuration options:
 + `webhook_event`
 	+ `push` or `status`. Push will update every time the branch is pushed to, status will update every time time branch passes its CI tests.
 + `webhook_branch`
-	+ Name of branch to match. e.g. `master`
+	+ Name of branch to match. e.g. `master`, or `*` to match all branches.
 + `webhook_secret`
 	+ Secret to authenticate Github's request. This needs pasting into Github too. e.g. `a long secret(that nobody should know!)`
 + `webhook_log_path`
 	+ Absolute path on disk of file to write logs to. e.g. `/var/log/webhook.log`
 + `repo_url`
-	+ The remote URL to pull. e.g. `https://github.com/username/repo.git`
+	+ The remote URL to pull. e.g. `git@github.com:username/repo.git`
 + `repo_dir`
 	+ Absolute path on disk where the repo should be cloned. e.g. `/var/git/repo`
 + `destination_path`
@@ -51,7 +70,7 @@ Configuration options:
 	+ URL: `http://xx.xx.xx.xx/github-deploy` (as configured in steps above)
 	+ Content type: application/json
 	+ Secret: _the same as what's stored in config.ini_
-	+ Which events: Just the push event
+	+ Which events: Send everything
 	+ Active: true
 + Github's ping should be responded with a pong from the webhook script.
 
