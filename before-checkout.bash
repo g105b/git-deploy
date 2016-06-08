@@ -92,4 +92,4 @@ if [ -d "$dir/after-checkout.d" ]; then
 	fi
 fi
 
-echo "Completed pull-checkout"
+echo "Completed before-checkout"
