@@ -9,11 +9,15 @@ echo "Destination path $4"
 echo "--------------"
 
 if [ -d $3 ]; then
-	rm -rf $3
+	cmd="rm -rf $3"
+	echo "Command: $cmd"
+	eval "$cmd"
 fi
 
 if [ -d $4 ]; then
-	rm -rf $4
+	cmd="rm -rf $4"
+	echo "Command: $cmd"
+	eval "$cmd"
 fi
 
 eval "$dir/db.php $1 delete"
