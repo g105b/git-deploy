@@ -95,7 +95,7 @@ foreach ($config as $key => $value) {
 
 	foreach (["repo", "branch"] as $replaceTag) {
 		$tag = "{" . $replaceTag . "}";
-		if(strstr($tag, $value)) {
+		if(strstr($value, $tag)) {
 			$value = str_replace($tag, $repoNameNoSlashes, $escapedValue);
 		}
 	}
