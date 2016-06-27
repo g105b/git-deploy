@@ -61,13 +61,13 @@ if(empty($payload)) {
 
 $repoName = $payload->repository->full_name;
 $repoNameNoSlashes = str_replace("/", "_", $repoName);
-
 $receivedBranch = isset($payload->ref) ? $payload->ref : null;
+
 if($receivedBranch) {
-	if(strstr($receivedBranch, "/")) {
+	if($receivedBranch[0] === "/") {
 		$receivedBranch = substr(
 			$receivedBranch,
-			strrpos($receivedBranch, "/") + 1
+			1
 		);
 	}
 }
@@ -79,6 +79,7 @@ else {
 		}
 	}
 }
+$receivedBranchNoSlashes = preg_replace("/[\/\\ ]/", "_", $receivedBranch);
 
 if(is_dir(__DIR__ . "/config.d")) {
 	$iniFile = __DIR__ . "/config.d/$repoNameNoSlashes.ini";
@@ -91,14 +92,8 @@ if(is_dir(__DIR__ . "/config.d")) {
 }
 
 foreach ($config as $key => $value) {
-	$escapedValue = preg_replace("/[\/\\ ]/", "_", $value);
-
-	foreach (["repo", "branch"] as $replaceTag) {
-		$tag = "{" . $replaceTag . "}";
-		if(strstr($value, $tag)) {
-			$value = str_replace($tag, $repoNameNoSlashes, $escapedValue);
-		}
-	}
+	$value = str_replace("{repo}", $repoNameNoSlashes, $value);
+	$value = str_replace("{branch}", $receivedBranchNoSlashes, $value);
 
 	$config[$key] = $value;
 }
