@@ -91,10 +91,14 @@ if(is_dir(__DIR__ . "/config.d")) {
 }
 
 foreach ($config as $key => $value) {
-	$value = str_replace("{repo}", $repoNameNoSlashes,
-		preg_replace("/[\/\\ ]/", "_", $value));
-	$value = str_replace("{branch}", $receivedBranch, 
-		preg_replace("/[\/\\ ]/", "_", $value));
+	$escapedValue = preg_replace("/[\/\\ ]/", "_", $value);
+
+	foreach (["repo", "branch"] as $replaceTag) {
+		$tag = "{" . $replaceTag . "}";
+		if(strstr($tag, $value)) {
+			$value = str_replace($tag, $repoNameNoSlashes, $escapedValue);
+		}
+	}
 
 	$config[$key] = $value;
 }
