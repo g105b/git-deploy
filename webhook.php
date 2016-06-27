@@ -181,7 +181,7 @@ exec($pullCheckoutScriptPath . " 2>&1", $responseArray);
 $response = implode("\n", $responseArray);
 
 $logPath = $config["webhook_log_path"];
-if($logPath !== false) {
+if(!empty($logPath)) {
 	file_put_contents(
 		$logPath,
 		date("Y-m-d H:i:s") . PHP_EOL . $response . PHP_EOL,
