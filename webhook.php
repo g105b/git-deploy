@@ -93,10 +93,14 @@ if(is_dir(__DIR__ . "/config.d")) {
 foreach ($config as $key => $value) {
 	$value = str_replace("{repo}", $repoNameNoSlashes, $value);
 	$value = str_replace("{branch}", $receivedBranch, $value);
-	$value = preg_replace("/[\/\\ ]/", "_", $value);
 
 	$config[$key] = $value;
 }
+
+$config["repo_dir"] = preg_replace(
+	"/[\/\\ ]/", "_", $config["repo_dir"]);
+$config["destination_path"] = preg_replace(
+	"/[\/\\ ]/", "_", $config["destination_path"]);
 
 $activeBranch = $config["webhook_branch"];
 
